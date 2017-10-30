@@ -1,0 +1,52 @@
+#!/bin/ksh
+
+CONFIG_FILE="${HOME}/.slopenrc"
+
+prompt_prog() {
+    ## Prompt for program
+    if [[ -t 0 ]]; then
+	print -u2 -n "Didn't found suitable program. Please enter program name: "
+	read ACTION
+	print "${ACTION}"
+    else
+	ACTION="`print | dmenu -p slopen:`"
+	print "${ACTION}"
+    fi
+}
+
+trim() { S="${1%%+([[:space:]])}"; S="${S##+([[:space:]])}"; print -n "${S}"; }
+
+IFS=':='
+for FILENAME in "$@"; do
+    FOUND=0
+
+    while read TYPE REG ACTION; do
+	if [[ -z "${TYPE// }" ]]; then;          continue
+	elif grep -Pq '^#' <<< "${TYPE}"; then;  continue
+	fi
+	REG="`trim \"${REG}\"`"
+	TOMATCH=
+	TYPE="`trim \"${TYPE}\"`"
+	if [[ "${TYPE}" == 'S' ]]; then
+	    TOMATCH="${FILENAME}"
+	elif [[ "${TYPE}" == 'M' ]]; then
+	    TOMATCH="`file -b --mime-type ${FILENAME}`"
+	else
+	    print -u2 "Unknown rule type in .slopenrc: ${TYPE}"
+	    continue
+	fi
+	if grep -Pq "${REG}" <<< "${TOMATCH}"; then
+	    ACTION="`trim \"${ACTION}\"`"
+	    ${ACTION} "${FILENAME}" &
+	    FOUND=1
+	    break
+	fi
+    done < "${CONFIG_FILE}"
+
+    if [[ "${FOUND}" == 0 ]]; then
+	# print -u2 "Cannot find program associated to '${FILENAME}'.\nPlease add it to ${CONFIG_FILE}"
+	`prompt_prog` "${FILENAME}"
+    fi
+done
+
+disown

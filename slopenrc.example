@@ -1,0 +1,24 @@
+# ~/.slopenrc
+#
+# slopen scans through these rule one-by-one to decide command used to open a file.
+# If multiple rules matches a file, the first rule is always used.
+# 
+# Each rule should look like
+#
+#     <type>: <regrex> : <command>
+#
+# If type is 'M' then regular expression is matched on the mime type. If it is 'S'
+# then it matches file name instead. Whitespace around the delimiter ':' is ignored.
+
+S: .*\.ps$                  :  zathura
+S: .*\.pdf$                 :  zathura
+S: .*\.png$                 :  qiv
+S: .*\.jpg$                 :  qiv
+S: .*\.jpeg$                :  qiv
+S: .*\.mp3$                 :  xmms
+S: .*\.ogg$                 :  xmms
+S: .*\.wav$                 :  xmms
+S: .*\.mpg$                 :  mplayer
+S: .*\.mp4$                 :  mplayer
+M: ^inode/directory$        :  rox
+M: ^text/.*                 :  emacs
