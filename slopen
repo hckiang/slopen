@@ -1,6 +1,7 @@
 #!/bin/ksh
 
 CONFIG_FILE="${HOME}/.slopenrc"
+IFS=':'
 
 prompt_prog() {
     ## Prompt for program
@@ -16,7 +17,6 @@ prompt_prog() {
 
 trim() { S="${1%%+([[:space:]])}"; S="${S##+([[:space:]])}"; print -n "${S}"; }
 
-IFS=':='
 for FILENAME in "$@"; do
     FOUND=0
 
