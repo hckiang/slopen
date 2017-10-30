@@ -40,7 +40,7 @@ Both should be in package repositories in most Linux distribution.
 use to open a file.
 Each rule should look like
 
-     <type>: <regrex> : <command>
+     <type>: <regex> : <command>
 
 Type can be either `M` and `S`.
 If type is 'M' then regular expression is matched on the MIME type. If it is 'S'
