@@ -8,7 +8,10 @@ configuring it can be pretty inconvenient: you need to create
 `.desktop` files and debugging its wrong behaviour can be a
 nightmare.
 
-`slopen` is a simple tool that open a file with a default application.
+`slopen` is an alternative with a single simple configuration file.
+When it didn't find a suitable command to open a file, the user is
+prompted, either directly in the terminal or with `dmenu`.
+
 
 ## Usage
 
