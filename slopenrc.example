@@ -1,14 +1,17 @@
 # ~/.slopenrc
 #
-# slopen scans through these rule one-by-one to decide command used to open a file.
-# If multiple rules matches a file, the first rule is always used.
-# 
+# `slopen` scans through 'rules' in `~/.slopenrc` one-by-one to decide which command to
+# use to open a file.
 # Each rule should look like
-#
-#     <type>: <regrex> : <command>
-#
-# If type is 'M' then regular expression is matched on the mime type. If it is 'S'
-# then it matches file name instead. Whitespace around the delimiter ':' is ignored.
+# 
+#      <type>: <regrex> : <command>
+# 
+# Type can be either `M` and `S`.
+# If type is 'M' then regular expression is matched on the MIME type. If it is 'S'
+# then it matches file name instead. Whitespaces around the delimiter ':' is ignored.
+# 
+# If multiple rules matches a file, the first rule is always used. Lines started with
+# '#' are ignored.
 
 S: .*\.ps$                  :  zathura
 S: .*\.pdf$                 :  zathura
