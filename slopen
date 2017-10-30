@@ -37,7 +37,7 @@ for FILENAME in "$@"; do
 	fi
 	if grep -Pq "${REG}" <<< "${TOMATCH}"; then
 	    ACTION="`trim \"${ACTION}\"`"
-	    ${ACTION} "${FILENAME}" &
+	    eval "${ACTION} ${FILENAME}" &
 	    FOUND=1
 	    break
 	fi
@@ -48,5 +48,3 @@ for FILENAME in "$@"; do
 	`prompt_prog` "${FILENAME}"
     fi
 done
-
-disown
