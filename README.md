@@ -62,11 +62,30 @@ Example:
 
 With this config file, say, when you call `slopen ~`, it will invoke `rox ~`.
 
-## Finding the right MIME type
+## Tell xdg-open, Firefox and everything to use slopen
 
-Sometimes you want to find out which MIME type your file has when writing rules.
-You find the MIME type with this command:
+While it is possible to just replace the `xdg-open` executable with `slopen`, this is usually not enough to change the behaviour of some applications such as Firefox, which uses the C API directly to access the default application database instead of accessing it through the xdg-open binary.
 
-    $ file -b --mime-type foo.png
-    image/png
+Since too many applications is using the same xdg-mime database through different interfaces, perhaps the easiest way to make everything use slopen is to directly setting the default application of every MIME types to `slopen` in the xdg-mime database. Doing so also imply that `xdg-open` will forward everything to `slopen`.
 
+It is easy to do so: first, create the file `~/.local/share/applications/slopen.desktop` with the following content
+```
+Name=Slopen
+Exec=slopen %F
+Type=Application
+```
+
+Then use the following command to set the default application of all known MIME types to `slopen.desktop`:
+```
+find /usr/share/applications ~/.local/share/applications \
+     -type f -name '*.desktop' \
+     -exec awk 'match($0, /^MimeType=(.*)/, m) {\
+     	   split(m[1],t,";");\
+	   for (i in t) \
+	       if (t[i]!="") \
+	       	  print(t[i])
+     }' {} \; | \
+     xargs -I {} xdg-mime default slopen.desktop {}
+```
+
+You may want to run this again after installing an application which introduces a new MIME type. So you may want to add it as your cron jobs, into `/etc/rc.local` or to some hooks in your distro's package manager, depending on your preference.
