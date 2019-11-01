@@ -70,6 +70,7 @@ Since too many applications is using the same xdg-mime database through differen
 
 It is easy to do so: first, create the file `~/.local/share/applications/slopen.desktop` with the following content
 ```
+[Desktop Entry]
 Name=Slopen
 Exec=slopen %F
 Type=Application
