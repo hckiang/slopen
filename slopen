@@ -2,7 +2,6 @@
 
 CONFIG_FILE="${HOME}/.slopenrc"
 IFS=':'
-SHELL=/bin/mksh
 prompt_prog() {
     ## Prompt for program
     if [[ -t 0 ]]; then
